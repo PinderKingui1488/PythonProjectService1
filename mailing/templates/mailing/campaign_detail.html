@@ -1,0 +1,25 @@
+{% extends 'clients/base.html' %}
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h4> Информация о рассылке </h4>
+              <p> Тема сообщения: {{ object.message.topic }} </p>
+              <p> Сообщение: {{ object.message.body }} </p>
+              <p> Дата первой отправки: {{ object.first_sent_time }} </p>
+              <p> Дата окончания отправки: {{ object.end_time }} </p>
+              <p> Статус: {{ object.status }} </p>
+              <p> Владелец: {{ object.owner }} </p>
+              </div>
+              <div class="btn-group">
+                  <a class="btn btn-primary" href="{% url 'mailing:campaign_list'%}" role="button">Обратно</a>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

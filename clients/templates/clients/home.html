@@ -1,0 +1,77 @@
+{% extends 'clients/base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container mt-3">
+    <div class="row">
+        {% if perms.mailings.view_campaign %}
+        <div class="col-md-auto col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Список рассылок</h5>
+                    <p class="card-text">Посмотреть все рассылки</p>
+                    <a href="{% url 'mailings:campaign_list' %}" class="btn btn-primary">Перейти</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if perms.mailings.view_message %}
+        <div class="col-md-auto col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Список сообщений</h5>
+                    <p class="card-text">Посмотреть все сообщения</p>
+                    <a href="{% url 'mailings:message_list' %}" class="btn btn-primary">Перейти</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if perms.clients.view_clients %}
+        <div class="col-md-auto col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Список клиентов</h5>
+                    <p class="card-text">Посмотреть всех клиентов</p>
+                    <a href="{% url 'clients:clients_list' %}" class="btn btn-primary">Перейти</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if perms.users.view_user %}
+        <div class="col-md-auto col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Список пользователей</h5>
+                    <p class="card-text">Посмотреть всех пользователей</p>
+                    <a href="{% url 'users:users_list' %}" class="btn btn-primary">Перейти</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if user.is_superuser or user.is_staff %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Статистика рассылок</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Создано рассылок: {{ count_campaign }}</li>
+                        <li class="list-group-item">Количество активных рассылок: {{ active_campaign_count }}</li>
+                        <li class="list-group-item">Количество уникальных получателей: {{ unique_clients_count }}</li>
+                        <li class="list-group-item">Количество успешных попыток рассылки: {{ total_successful_attempts }}</li>
+                        <li class="list-group-item">Количество неуспешных попыток рассылки: {{ total_unsuccessful_attempts }}</li>
+                        <li class="list-group-item">Общее количество отправленных сообщений: {{ total_sent_messages }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endif %}
+{% endblock %}

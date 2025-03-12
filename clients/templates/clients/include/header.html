@@ -1,0 +1,54 @@
+<header data-bs-theme="dark">
+    <div class="collapse text-bg-dark" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10 col-md-7 py-4">
+                    <h4>About Рыцарь упал</h4>
+                    <p class="text-body-secondary"> Рыцарь Сэр Демьянбальд 🎂23/March/1678 Авантюрист Сэр Евгенфри 🎂22/May/1667  Цыганка Цыганка 🎂12/May/1677.</p>
+                </div>
+                <div class="col-sm-2 offset-md-1 py-4">
+                    <ul class="list-unstyled">
+                        <li>
+                            <a class="btn btn-sm btn-outline-secondary" href="{% url 'clients:home' %}"
+                               role="button">Главная
+                            </a>
+                        </li>
+                    </ul>
+                    {% if user.is_authenticated %}
+                        <ul class="list-unstyled">
+                            <li>
+                                <form action="{% url 'users:logout' %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Выйти</button>
+                                </form>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <ul class="list-unstyled">
+                            <li>
+                                <a class="btn btn-sm btn-outline-secondary" href="{% url 'users:register' %}"
+                                   role="button">Регистрация
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a class="btn btn-sm btn-outline-secondary" href="{% url 'users:login' %}"
+                                   role="button">Войти
+                                </a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+</header>

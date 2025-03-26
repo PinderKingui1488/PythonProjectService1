@@ -3,38 +3,40 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-10 col-md-7 py-4">
-                    <h4>About Рыцарь упал</h4>
-                    <p class="text-body-secondary"> Рыцарь Сэр Демьянбальд 🎂23/March/1678 Авантюрист Сэр Евгенфри 🎂22/May/1667  Цыганка Цыганка 🎂12/May/1677.</p>
+                    <h4 class="text-light">Oo, там еще и цыганка есть</h4>
+                    <p class="text-muted">Рыцари НЕ ЗАГАДЫВАЮТ ЖЕЛАНИЯ....</p>
                 </div>
                 <div class="col-sm-2 offset-md-1 py-4">
                     <ul class="list-unstyled">
-                        <li>
-                            <a class="btn btn-sm btn-outline-secondary" href="{% url 'clients:home' %}"
-                               role="button">Главная
+                        <li class="mb-2">
+                            <a class="btn btn-sm btn-outline-light d-flex align-items-center" href="{% url 'clients:home' %}" role="button">
+                                <i class="fas fa-home me-2"></i>Главная
                             </a>
                         </li>
                     </ul>
                     {% if user.is_authenticated %}
                         <ul class="list-unstyled">
-                            <li>
+                            <li class="mb-2">
                                 <form action="{% url 'users:logout' %}" method="POST">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Выйти</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-light d-flex align-items-center w-100">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Выйти
+                                    </button>
                                 </form>
                             </li>
                         </ul>
                     {% else %}
                         <ul class="list-unstyled">
-                            <li>
-                                <a class="btn btn-sm btn-outline-secondary" href="{% url 'users:register' %}"
-                                   role="button">Регистрация
+                            <li class="mb-2">
+                                <a class="btn btn-sm btn-outline-light d-flex align-items-center" href="{% url 'users:register' %}" role="button">
+                                    <i class="fas fa-user-plus me-2"></i>Регистрация
                                 </a>
                             </li>
                         </ul>
                         <ul class="list-unstyled">
                             <li>
-                                <a class="btn btn-sm btn-outline-secondary" href="{% url 'users:login' %}"
-                                   role="button">Войти
+                                <a class="btn btn-sm btn-outline-light d-flex align-items-center" href="{% url 'users:login' %}" role="button">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Войти
                                 </a>
                             </li>
                         </ul>

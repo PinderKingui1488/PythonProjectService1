@@ -2,22 +2,31 @@
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <h4> Имя: {{ object.full_name }} </h4>
-              <p> Комментарий: {{ object.comment }} </p>
-              <p class="card-text"> Почта: {{ object.email }} </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a class="btn btn-primary" href="{% url 'clients:clients_list'%}" role="button">Обратно</a>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">Информация о клиенте</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong>Имя:</strong> {{ object.full_name }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Комментарий:</strong> {{ object.comment }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Почта:</strong> {{ object.email }}
+                            </li>
+                        </ul>
+                        <div class="mt-3">
+                            <a class="btn btn-primary" href="{% url 'clients:clients_list' %}" role="button">
+                                <i class="fas fa-arrow-left me-2"></i>Обратно
+                            </a>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 {% endblock %}

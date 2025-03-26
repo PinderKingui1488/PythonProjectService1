@@ -1,23 +1,44 @@
 {% extends 'clients/base.html' %}
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <form class="row" method="post" enctype="multipart/form-data">
-                <div class="card">
-                    <div class="card-body">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-center mb-4">
+                        {% if object %}
+                            Редактирование клиента
+                        {% else %}
+                            Создание нового клиента
+                        {% endif %}
+                    </h4>
+                    <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary">
-                            {% if object %}
-                            Сохранить
-                            {% else %}
-                            Создать
-                            {% endif %}
-                        </button>
-                    </div>
+                        <div class="mb-3">
+                            {{ form.full_name.label_tag }}
+                            {{ form.full_name }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.email.label_tag }}
+                            {{ form.email }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.comment.label_tag }}
+                            {{ form.comment }}
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                {% if object %}
+                                    Сохранить
+                                {% else %}
+                                    Создать
+                                {% endif %}
+                            </button>
+                            <a href="{% url 'clients:clients_list' %}" class="btn btn-secondary">Отмена</a>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

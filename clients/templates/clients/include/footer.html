@@ -1,10 +1,19 @@
-<footer class="text-body-secondary py-5">
+<footer class="text-body-secondary py-5 bg-dark">
     <div class="container">
-        <p class="float-end mb-1">
-            <a href="{% url 'clients:home' %}">На главную</a>
-        </p>
-        <p class="mb-1">KnightFallmail - это сайт где юные рыцари могут обсудить свои подвиги </p>
-        <p class="mb-0">Не знакомы с Сэром Демьянбальдом? Можете зайти на самый большой ру <a href="https://youtu.be/CmWB48vDgYA?si=oMWywIitEZJNqTMj">тг канал</a>.
-            Там в чате они активно обсуждаются</p>
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-1 text-light">KnightFallmail - Это хроники великих рыцарей</p>
+                <p class="mb-0 text-light">
+                    Не знакомы с Сэром Демьянбальдом? Можете ознакомиться с
+                    <a href="https://youtu.be/CmWB48vDgYA?si=oMWywIitEZJNqTMj" class="text-warning">первоисточником</a>.
+
+                </p>
+            </div>
+            <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                <p class="float-end mb-1">
+                    <a href="{% url 'clients:home' %}" class="text-warning">На главную</a>
+                </p>
+            </div>
+        </div>
     </div>
 </footer>

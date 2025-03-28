@@ -29,9 +29,13 @@ class Campaign(models.Model):
         verbose_name="Дата первой отправки"
     )
     end_time = models.DateTimeField(
+        null=True,
+        blank=True,
         verbose_name="Дата окончания отправки"
     )
     status = models.CharField(
+        null=True,
+        blank=True,
         max_length=10,
         choices=[("created", "Создана"), ("started", "Запущена"), ("completed", "Завершена")],
         default="created",
@@ -51,12 +55,18 @@ class Campaign(models.Model):
         verbose_name="Получатели"
     )
     successful_attempts = models.IntegerField(
+        null=True,
+        blank=True,
         default=0
     )
     unsuccessful_attempts = models.IntegerField(
+        null=True,
+        blank=True,
         default=0
     )
     sent_messages = models.IntegerField(
+        null=True,
+        blank=True,
         default=0
     )
     owner = models.ForeignKey(

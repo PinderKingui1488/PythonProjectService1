@@ -1,14 +1,17 @@
 import secrets
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.utils.crypto import get_random_string
+from django.views import View
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import CreateView, FormView
 from config.settings import EMAIL_HOST_USER
 from .forms import CustomUserCreationForm, PasswordRecoveryForm
 from django.core.mail import send_mail
 from .models import User
+from .services import block_user
 
 
 class RegisterView(CreateView):
@@ -68,6 +71,19 @@ class PasswordRecoveryView(FormView):
         return super().form_valid(form)
 
 
-from django.shortcuts import render
+class DetailUser(LoginRequiredMixin, View):
+    model = User
+    template_name = 'users/user.html'
+    context_object_name = 'user'
 
-# Create your views here.
+    def get_object(self):
+        return get_object_or_404(User)
+
+    def get(self, request, pk, *args, **kwargs):
+        user = self.get_object()
+        return render(request, self.template_name, {self.context_object_name: user})
+
+    def post(self, request, *args, **kwargs):
+        user = self.get_object()
+        block_user(user)
+        return redirect('user_list')

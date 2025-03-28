@@ -3,7 +3,7 @@
 {% if user.is_authenticated %}
 <div class="container mt-5">
     <div class="row">
-        {% if perms.mailing.view_campaign %}
+        {% if user.is_authenticated %}
         <div class="col-md-auto col-lg-4 mb-4">
             <div class="card shadow-sm h-100 hover-effect">
                 <div class="card-body text-center">
@@ -16,7 +16,7 @@
         </div>
         {% endif %}
 
-        {% if perms.mailing.view_message %}
+        {% if user.is_authenticated %}
         <div class="col-md-auto col-lg-4 mb-4">
             <div class="card shadow-sm h-100 hover-effect">
                 <div class="card-body text-center">
@@ -29,7 +29,7 @@
         </div>
         {% endif %}
 
-        {% if perms.clients.view_clients %}
+        {% if user.is_authenticated %}
         <div class="col-md-auto col-lg-4 mb-4">
             <div class="card shadow-sm h-100 hover-effect">
                 <div class="card-body text-center">
@@ -42,7 +42,7 @@
         </div>
         {% endif %}
 
-        {% if perms.users.view_user %}
+        {% if user.is_authenticated %}
         <div class="col-md-auto col-lg-4 mb-4">
             <div class="card shadow-sm h-100 hover-effect">
                 <div class="card-body text-center">

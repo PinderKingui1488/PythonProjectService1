@@ -10,7 +10,7 @@ from django.views.generic.edit import CreateView, FormView
 from config.settings import EMAIL_HOST_USER
 from .forms import CustomUserCreationForm, PasswordRecoveryForm
 from django.core.mail import send_mail
-from .models import User
+from .models import User, Newsletter  # Добавлена модель Newsletter
 from .services import block_user
 
 
@@ -39,12 +39,26 @@ class RegisterView(CreateView):
 class UsersListView(LoginRequiredMixin, ListView):
     model = User
     template_name = "users/users_list.html"
+    context_object_name = "users"
+
+    def get_queryset(self):
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            return User.objects.all()
+        return User.objects.filter(is_active=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Добавляем рассылки в контекст для всех пользователей
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            context['newsletters'] = Newsletter.objects.all()
+        else:
+            context['newsletters'] = Newsletter.objects.filter(created_by=self.request.user)
+        context['can_create_newsletter'] = True  # Все пользователи могут создавать рассылки
+        return context
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm("users.view_user"):
-            return HttpResponseForbidden(
-                "Не хватает прав"
-            )
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -76,14 +90,39 @@ class DetailUser(LoginRequiredMixin, View):
     template_name = 'users/user.html'
     context_object_name = 'user'
 
-    def get_object(self):
-        return get_object_or_404(User)
+    def get_object(self, pk):
+        return get_object_or_404(User, pk=pk)
 
     def get(self, request, pk, *args, **kwargs):
-        user = self.get_object()
-        return render(request, self.template_name, {self.context_object_name: user})
+        user = self.get_object(pk)
+        if not (request.user.is_staff or request.user.is_superuser or request.user.pk == user.pk):
+            return HttpResponseForbidden("У вас нет прав для просмотра этого профиля")
+        # Добавляем рассылки в контекст
+        newsletters = Newsletter.objects.filter(created_by=user) if not (
+            request.user.is_staff or request.user.is_superuser
+        ) else Newsletter.objects.all()
+        return render(request, self.template_name, {
+            self.context_object_name: user,
+            'newsletters': newsletters,
+            'can_create_newsletter': True
+        })
 
-    def post(self, request, *args, **kwargs):
-        user = self.get_object()
+    def post(self, request, pk, *args, **kwargs):
+        if not (request.user.is_staff or request.user.is_superuser):
+            return HttpResponseForbidden("У вас нет прав для выполнения этого действия")
+        user = self.get_object(pk)
         block_user(user)
-        return redirect('user_list')
+        return redirect('users:users_list')
+
+
+class NewsletterCreateView(LoginRequiredMixin, CreateView):
+    model = Newsletter
+    fields = ['title', 'content']  # Предполагаемые поля рассылки
+    template_name = 'users/newsletter_create.html'
+    success_url = reverse_lazy('users:users_list')
+
+    def form_valid(self, form):
+        newsletter = form.save(commit=False)
+        newsletter.created_by = self.request.user
+        newsletter.save()
+        return super().form_valid(form)

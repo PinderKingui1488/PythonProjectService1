@@ -114,3 +114,4 @@ class CampaignAttempt(models.Model):
         verbose_name = "Попытка"
         verbose_name_plural = "Попытки"
         ordering = ["date_attempt", "status"]
+

@@ -1,45 +1,163 @@
 {% extends 'clients/base.html' %}
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h4 class="card-title text-center mb-4">
-                        {% if object %}
-                            Редактирование клиента
-                        {% else %}
-                            Создание нового клиента
-                        {% endif %}
-                    </h4>
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            {{ form.full_name.label_tag }}
-                            {{ form.full_name }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.email.label_tag }}
-                            {{ form.email }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form.comment.label_tag }}
-                            {{ form.comment }}
-                        </div>
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                {% if object %}
-                                    Сохранить
-                                {% else %}
-                                    Создать
-                                {% endif %}
-                            </button>
-                            <a href="{% url 'clients:clients_list' %}" class="btn btn-secondary">Отмена</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="knightly-form-container">
+    <div class="knightly-form-wrapper">
+        <div class="knightly-form-header">
+            <h2>
+                <i class="fas fa-shield-alt"></i>
+                {% if object %}Редактирование рыцаря{% else %}Новый рыцарь{% endif %}
+            </h2>
         </div>
+
+        <form method="post" enctype="multipart/form-data" class="knightly-form">
+            {% csrf_token %}
+
+            <div class="knightly-form-fields">
+                {% for field in form %}
+                <div class="knightly-field-group">
+                    <div class="knightly-field-label">
+                        {{ field.label_tag }}
+                    </div>
+                    <div class="knightly-field-input">
+                        {{ field }}
+                        {% if field.help_text %}
+                        <small class="knightly-field-help">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                        <div class="knightly-field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="knightly-form-actions">
+                <button type="submit" class="knightly-button knightly-button-primary">
+                    {% if object %}<i class="fas fa-save"></i> Сохранить{% else %}<i class="fas fa-plus"></i> Создать{% endif %}
+                </button>
+                <a href="{% url 'clients:clients_list' %}" class="knightly-button knightly-button-secondary">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </a>
+            </div>
+        </form>
     </div>
 </div>
+
+<style>
+    .knightly-form-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .knightly-form-wrapper {
+        background: rgba(30, 30, 46, 0.9);
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .knightly-form-header {
+        background: linear-gradient(to right, #4a2d8a, #2a1a4a);
+        color: #ffd700;
+        padding: 1.5rem;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .knightly-form-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    .knightly-form {
+        padding: 2rem;
+    }
+
+    .knightly-field-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .knightly-field-label label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #ffd700;
+        font-weight: 600;
+    }
+
+    .knightly-field-input input,
+    .knightly-field-input textarea,
+    .knightly-field-input select {
+        width: 100%;
+        padding: 0.75rem;
+        background: rgba(20, 20, 30, 0.8);
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        border-radius: 4px;
+        color: #fff;
+        font-size: 1rem;
+    }
+
+    .knightly-field-input input:focus,
+    .knightly-field-input textarea:focus,
+    .knightly-field-input select:focus {
+        outline: none;
+        border-color: #ffd700;
+        box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+    }
+
+    .knightly-field-help {
+        display: block;
+        margin-top: 0.5rem;
+        color: #aaa;
+        font-size: 0.85rem;
+    }
+
+    .knightly-field-error {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+    }
+
+    .knightly-form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        justify-content: center;
+    }
+
+    .knightly-button {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .knightly-button-primary {
+        background: linear-gradient(to right, #6f42c1, #5a2d9e);
+        color: white;
+    }
+
+    .knightly-button-primary:hover {
+        background: linear-gradient(to right, #5a2d9e, #4a2385);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(111, 66, 193, 0.3);
+    }
+
+    .knightly-button-secondary {
+        background: rgba(40, 40, 60, 0.8);
+        color: #ddd;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .knightly-button-secondary:hover {
+        background: rgba(50, 50, 70, 0.9);
+        color: #fff;
+    }
+</style>
 {% endblock %}

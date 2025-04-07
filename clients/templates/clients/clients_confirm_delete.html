@@ -1,27 +1,60 @@
 {% extends 'clients/base.html' %}
 {% block content %}
-    <div class="album py-5 bg-body-tertiary">
-        <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Удаление клиента</h5>
-                            <p class="card-text">Вы уверены, что хотите удалить клиента: <strong>{{ object.full_name }}</strong>?</p>
-                            <form method="POST" class="d-flex justify-content-center gap-2">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-trash-alt me-2"></i>Удалить
-                                </button>
-                                <a class="btn btn-secondary"
-                                   href="{% url 'clients:clients_list' %}" role="button">
-                                    <i class="fas fa-times me-2"></i>Отменить
-                                </a>
-                            </form>
-                        </div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0" style="background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 215, 0, 0.3);">
+                <div class="card-body text-center py-4">
+                    <i class="fas fa-exclamation-triangle fa-4x mb-4 text-warning"></i>
+                    <h3 class="card-title text-light mb-4">Ремуф рыцаря {{object.full_name}}</h3>
+
+                    <div class="alert alert-dark border-warning">
+                        <p class="mb-0">Вы собираетесь изгнать этого рыцаря из вашего ордена. Это действие нельзя будет отменить.</p>
                     </div>
+
+                    <form method="POST" class="mt-4">
+                        {% csrf_token %}
+                        <div class="d-grid gap-3 d-md-flex justify-content-md-center">
+                            <button type="submit" class="btn btn-danger px-4 py-2">
+                                <i class="fas fa-skull-crossbones me-2"></i>Подтвердить ремуф
+                            </button>
+                            <a href="{% url 'clients:clients_list' %}" class="btn btn-secondary px-4 py-2">
+                                <i class="fas fa-times-circle me-2"></i>Отмена
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .alert {
+        background: rgba(20, 20, 20, 0.8);
+        color: #ffd700;
+    }
+    .btn-danger {
+        background: linear-gradient(135deg, #dc3545, #a71d2a);
+        border: none;
+        transition: all 0.3s;
+    }
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+    }
+    .btn-secondary {
+        background: linear-gradient(135deg, #6c757d, #495057);
+        border: none;
+        transition: all 0.3s;
+    }
+    .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+    }
+</style>
 {% endblock %}

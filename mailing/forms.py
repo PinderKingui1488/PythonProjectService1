@@ -28,6 +28,18 @@ class CampaignForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
 
+        self.fields["first_sent_time"].widget.attrs.update(
+            {"class": "form-control", "placeholder": "Дата первой отправки"}
+        )
+
+        self.fields["end_time"].widget.attrs.update(
+            {"class": "form-control", "placeholder": "Дата окончания отправки"}
+        )
+
+        self.fields["status"].widget.attrs.update(
+            {"class": "form-control", "placeholder": "Статус"}
+        )
+
         self.fields["message"].widget.attrs.update(
             {"class": "form-control", "placeholder": "Сообщение"}
         )

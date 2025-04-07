@@ -39,4 +39,3 @@ urlpatterns = [
     path("list", views.UsersListView.as_view(), name="user_list"),
     path("block_user/<int:pk>", block_user, name="block_user"),
     ]
-

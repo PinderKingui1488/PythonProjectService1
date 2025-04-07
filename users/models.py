@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
@@ -39,17 +39,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
-    verbose_name = 'Пользователь'
-    verbose_name_plural = 'Пользователи'
-    permissions = [('manager', 'Manager'), ('can_block_users', 'Can block users')]
-
-class Newsletter(models.Model):
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
-
-
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+        permissions = [
+            ("can_block_user", "Сan block user"),
+        ]

@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
@@ -8,46 +9,30 @@ from mailing.models import Message, Campaign
 from mailing.services import get_campaign_from_cache
 
 
-class MessageCreateView(LoginRequiredMixin, CreateView):
+class MessageCreateView(CreateView):
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy("mailings:message_list")
 
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        return super().form_valid(form)
 
-
-class MessageListView(LoginRequiredMixin, ListView):
+class MessageListView(ListView):
     model = Message
     template_name = "mailings/message_list.html"
 
-    def get_queryset(self):
-        return Message.objects.filter(owner=self.request.user)
 
-
-class MessageDetailView(LoginRequiredMixin, DetailView):
+class MessageDetailView(DetailView):
     model = Message
 
-    def get_queryset(self):
-        return Message.objects.filter(owner=self.request.user)
 
-
-class MessageUpdateView(LoginRequiredMixin, UpdateView):
+class MessageUpdateView(UpdateView):
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy("mailings:message_list")
 
-    def get_queryset(self):
-        return Message.objects.filter(owner=self.request.user)
 
-
-class MessageDeleteView(LoginRequiredMixin, DeleteView):
+class MessageDeleteView(DeleteView):
     model = Message
     success_url = reverse_lazy("mailings:message_list")
-
-    def get_queryset(self):
-        return Message.objects.filter(owner=self.request.user)
 
 
 class CampaignCreateView(LoginRequiredMixin, CreateView):
@@ -83,11 +68,6 @@ class CampaignUpdateView(LoginRequiredMixin, UpdateView):
     model = Campaign
     form_class = CampaignForm
     success_url = reverse_lazy("mailings:campaign_list")
-
-    def get_form_class(self):
-        if self.request.user.is_staff:
-            return CampaignForm
-        return CampaignForm  # или другая форма для обычных пользователей
 
     def get_queryset(self):
         if self.request.user.is_staff:
